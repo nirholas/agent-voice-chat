@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 nirholas (https://github.com/nirholas/agent-voice-chat)
+
 const { Router } = require("express")
 const { apiKeyAuth } = require("../middleware/auth")
 const { responseHelpers } = require("../middleware/response")

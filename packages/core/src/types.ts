@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 nirholas (https://github.com/nirholas/agent-voice-chat)
+
 /** Message from the conversation transcript */
 export interface Message {
   id: string;

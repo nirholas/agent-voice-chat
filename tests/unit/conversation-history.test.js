@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 nirholas (https://github.com/nirholas/agent-voice-chat)
+
 import { ConversationHistory } from "../../providers/conversation-history"
 
 describe("ConversationHistory", () => {

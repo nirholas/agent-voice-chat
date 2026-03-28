@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 nirholas (https://github.com/nirholas/agent-voice-chat)
+
 const { BaseSocketProvider } = require("./base-socket-provider")
 
 class OpenAIChatProvider extends BaseSocketProvider {

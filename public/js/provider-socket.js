@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 nirholas (https://github.com/nirholas/agent-voice-chat)
+
 // Socket.IO-based audio provider for Claude/Groq
 // Captures mic audio via MediaRecorder, sends to server for STT -> LLM -> TTS pipeline
 function initSocketProvider(agent) {

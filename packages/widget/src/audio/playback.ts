@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 nirholas (https://github.com/nirholas/agent-voice-chat)
+
 /**
  * Audio playback queue — plays base64-encoded audio chunks
  * sequentially, with support for browser TTS fallback.

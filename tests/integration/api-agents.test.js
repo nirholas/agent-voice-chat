@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 nirholas (https://github.com/nirholas/agent-voice-chat)
+
 import request from "supertest"
 import createAgentRoutes from "../../src/server/routes/agents.js"
 import { createTestApp } from "../helpers/create-test-app.js"
