@@ -1,8 +1,6 @@
 # agent-voice-chat
 
 > Add multi-agent AI voice conversations to any website in minutes
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
 
 <!-- TODO: Add hero GIF/screenshot showing the widget in action -->
@@ -181,4 +179,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, coding standards, 
 
 ## License
 
-[MIT](LICENSE)
+All rights reserved. See [LICENSE](LICENSE).
