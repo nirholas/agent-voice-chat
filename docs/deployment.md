@@ -114,7 +114,7 @@ sudo apt install -y nodejs
 ### 2. Clone and Install
 
 ```bash
-git clone https://github.com/anthropics/agent-voice-chat.git
+git clone https://github.com/nirholas/agent-voice-chat.git
 cd agent-voice-chat
 npm install --production
 cp .env.example .env

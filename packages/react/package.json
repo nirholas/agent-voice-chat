@@ -43,6 +43,6 @@
     "vite-plugin-dts": "^3.9.0"
   },
   "sideEffects": false,
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "keywords": ["voice-chat", "ai", "react", "hooks", "component"]
 }

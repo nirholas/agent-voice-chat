@@ -167,7 +167,7 @@ Pass the room ID to the widget:
 
 ```html
 <script
-  src="https://unpkg.com/agent-voice-chat/widget.js"
+  src="/assets/agent-voice-chat.min.js"
   data-server="https://your-server.com"
   data-agent="bob"
   data-room="support-session-abc123"

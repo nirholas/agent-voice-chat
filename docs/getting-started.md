@@ -14,7 +14,7 @@ Get from zero to a working voice chat in under 5 minutes.
 ## Step 1: Clone and Install
 
 ```bash
-git clone https://github.com/anthropics/agent-voice-chat.git
+git clone https://github.com/nirholas/agent-voice-chat.git
 cd agent-voice-chat
 npm install
 ```

@@ -24,7 +24,7 @@ Users speak into their mic. AI agents listen, think, and talk back — in real t
 ### Option 1: Self-host the server
 
 ```bash
-git clone https://github.com/anthropics/agent-voice-chat.git
+git clone https://github.com/nirholas/agent-voice-chat.git
 cd agent-voice-chat
 npm install
 cp .env.example .env   # add your API key(s)
@@ -35,9 +35,17 @@ Open `http://localhost:3000` and start talking.
 
 ### Option 2: Embed anywhere (no framework needed)
 
+The widget is not on npm yet, so build it from this repo and host the bundle
+yourself:
+
+```bash
+cd packages/widget && npm install && npm run build
+# copy packages/widget/dist/agent-voice-chat.min.js next to your site's assets
+```
+
 ```html
 <script
-  src="https://unpkg.com/agent-voice-chat/widget.js"
+  src="/assets/agent-voice-chat.min.js"
   data-server="https://your-server.com"
   data-agent="bob"
 ></script>
@@ -46,6 +54,10 @@ Open `http://localhost:3000` and start talking.
 A floating voice chat button appears on your page. That's it.
 
 ### Option 3: React
+
+`@agent-voice-chat/react` is not published to npm yet. Install it from a clone
+(`npm install /path/to/agent-voice-chat/packages/react`) or work inside this
+repo's workspaces, then:
 
 ```tsx
 import { VoiceChat } from '@agent-voice-chat/react';
@@ -56,6 +68,9 @@ function App() {
 ```
 
 ### Option 4: Vue
+
+`@agent-voice-chat/vue` is likewise unpublished; install it from a clone the
+same way.
 
 ```vue
 <template>
@@ -164,14 +179,15 @@ agent-voice-chat/
 │   ├── voice.html            # Dynamic agent page
 │   └── js/                   # Client-side audio + Socket.IO logic
 └── packages/
-    └── widget/               # Embeddable widget package
+    ├── core/                 # Framework-agnostic client
+    ├── react/                # React <VoiceChat /> component
+    ├── vue/                  # Vue <VoiceChat /> component
+    └── widget/               # Embeddable script-tag widget
 ```
 
 ## Community
 
-- [**Discord**](https://discord.gg/YOUR_INVITE_CODE) — Ask questions, share what you've built, show off your deployments
-- [**GitHub Discussions**](https://github.com/nirholas/agent-space/discussions) — Longer-form Q&A, ideas, and show & tell
-- [**GitHub Issues**](https://github.com/nirholas/agent-space/issues) — Bug reports and feature requests
+- [**GitHub Issues**](https://github.com/nirholas/agent-voice-chat/issues) - Bug reports, feature requests, and questions
 
 ## Contributing
 

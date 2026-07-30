@@ -2,11 +2,22 @@
 
 Add AI voice chat to any website with a single `<script>` tag. No build tools or frameworks required.
 
+> The widget is not published to npm yet, so there is no CDN URL to point at.
+> Build the bundle from this repo and serve it from your own site:
+>
+> ```bash
+> cd packages/widget && npm install && npm run build
+> # copy packages/widget/dist/agent-voice-chat.min.js into your site's assets
+> ```
+>
+> Every example below loads it from `/assets/agent-voice-chat.min.js`. Adjust
+> that path to wherever you host the file.
+
 ## Basic Usage
 
 ```html
 <script
-  src="https://unpkg.com/agent-voice-chat/widget.js"
+  src="/assets/agent-voice-chat.min.js"
   data-server="https://your-server.com"
   data-agent="bob"
 ></script>
@@ -29,7 +40,7 @@ This renders a floating button in the bottom-right corner. When clicked, it open
 
 ```html
 <script
-  src="https://unpkg.com/agent-voice-chat/widget.js"
+  src="/assets/agent-voice-chat.min.js"
   data-server="https://your-server.com"
   data-agent="alice"
   data-position="bottom-left"
@@ -42,7 +53,7 @@ This renders a floating button in the bottom-right corner. When clicked, it open
 For more control, initialize the widget programmatically:
 
 ```html
-<script src="https://unpkg.com/agent-voice-chat/widget.js"></script>
+<script src="/assets/agent-voice-chat.min.js"></script>
 <script>
   const widget = AgentVoiceChat.init({
     server: 'https://your-server.com',
@@ -73,7 +84,7 @@ By default, the widget floats over your page. To embed it inline:
 ```html
 <div id="voice-chat-container" style="width: 400px; height: 600px;"></div>
 
-<script src="https://unpkg.com/agent-voice-chat/widget.js"></script>
+<script src="/assets/agent-voice-chat.min.js"></script>
 <script>
   AgentVoiceChat.init({
     server: 'https://your-server.com',
@@ -104,7 +115,7 @@ Add this to your theme's `footer.php` or use a "Custom HTML" block:
 
 ```html
 <script
-  src="https://unpkg.com/agent-voice-chat/widget.js"
+  src="/assets/agent-voice-chat.min.js"
   data-server="https://your-server.com"
   data-agent="bob"
 ></script>
@@ -116,7 +127,7 @@ Add to your theme's `theme.liquid` file, just before the closing `</body>` tag:
 
 ```html
 <script
-  src="https://unpkg.com/agent-voice-chat/widget.js"
+  src="/assets/agent-voice-chat.min.js"
   data-server="https://your-server.com"
   data-agent="bob"
 ></script>
@@ -136,7 +147,7 @@ export default function RootLayout({ children }) {
       <body>
         {children}
         <Script
-          src="https://unpkg.com/agent-voice-chat/widget.js"
+          src="/assets/agent-voice-chat.min.js"
           data-server="https://your-server.com"
           data-agent="bob"
           strategy="lazyOnload"
@@ -160,7 +171,7 @@ export default function RootLayout({ children }) {
   <p>Click the chat button in the corner to talk to our AI assistant.</p>
 
   <script
-    src="https://unpkg.com/agent-voice-chat/widget.js"
+    src="/assets/agent-voice-chat.min.js"
     data-server="https://your-server.com"
     data-agent="bob"
   ></script>

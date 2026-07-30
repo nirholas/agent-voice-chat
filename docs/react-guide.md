@@ -5,7 +5,8 @@ Use the `@agent-voice-chat/react` package for first-class React integration with
 ## Installation
 
 ```bash
-npm install @agent-voice-chat/react
+# Not on npm yet: install it from a clone of the repo
+npm install /path/to/agent-voice-chat/packages/react
 ```
 
 Peer dependencies: `react >= 18`

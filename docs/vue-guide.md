@@ -5,7 +5,8 @@ Use the `@agent-voice-chat/vue` package for Vue 3 integration with components an
 ## Installation
 
 ```bash
-npm install @agent-voice-chat/vue
+# Not on npm yet: install it from a clone of the repo
+npm install /path/to/agent-voice-chat/packages/vue
 ```
 
 Peer dependencies: `vue >= 3.3`

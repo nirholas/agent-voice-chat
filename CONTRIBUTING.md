@@ -14,7 +14,7 @@ Thanks for your interest in contributing! This guide covers development setup, c
 ### Getting Started
 
 ```bash
-git clone https://github.com/anthropics/agent-voice-chat.git
+git clone https://github.com/nirholas/agent-voice-chat.git
 cd agent-voice-chat
 npm install
 cp .env.example .env   # Add your API keys
