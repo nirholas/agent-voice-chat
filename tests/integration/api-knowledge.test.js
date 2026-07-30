@@ -2,8 +2,16 @@
 // Copyright 2026 nirholas (https://github.com/nirholas/agent-voice-chat)
 
 import request from "supertest"
+import { createRequire } from "module"
 import createKnowledgeRoutes from "../../src/server/routes/knowledge.js"
 import { createTestApp } from "../helpers/create-test-app.js"
+
+// The route under test is CommonJS and calls require("fs"). Spying on the ESM
+// namespace of "fs" is impossible (frozen namespace object), and it would not
+// intercept the route's require() anyway. Resolving fs through the Node require
+// cache gives us the exact mutable object the route holds.
+const nodeRequire = createRequire(import.meta.url)
+const fs = nodeRequire("fs")
 
 /**
  * Create a lightweight in-memory mock of KnowledgeBase.
@@ -51,11 +59,13 @@ function createMockKnowledgeBase() {
       chunks.length = 0
     }),
 
+    // Mirrors the real KnowledgeBase.documents map the routes read from
+    documents,
+
     // Expose for seeding
     _addDocument: (name) => {
       documents[name] = { name, path: `/tmp/${name}`, chunksCount: 2, indexedAt: new Date().toISOString() }
-    },
-    _documents: documents
+    }
   }
 }
 
@@ -115,7 +125,6 @@ describe("Knowledge API routes", () => {
   describe("POST /api/knowledge/ingest", () => {
     it("ingests a specific document by filename", async () => {
       // Mock fs.existsSync to return true for the mocked knowledge dir
-      const fs = await import("fs")
       const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true)
 
       const res = await request(app)
@@ -130,7 +139,6 @@ describe("Knowledge API routes", () => {
     })
 
     it("returns 404 when the file does not exist", async () => {
-      const fs = await import("fs")
       const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(false)
 
       const res = await request(app)
@@ -152,7 +160,6 @@ describe("Knowledge API routes", () => {
     })
 
     it("prevents path traversal by using only the basename of the filename", async () => {
-      const fs = await import("fs")
       const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(false)
 
       const res = await request(app)
@@ -170,7 +177,6 @@ describe("Knowledge API routes", () => {
     })
 
     it("handles ingestion errors gracefully", async () => {
-      const fs = await import("fs")
       const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true)
       knowledgeBase.ingestDocument.mockRejectedValue(new Error("Embedding service down"))
 
@@ -295,7 +301,6 @@ describe("Knowledge API routes", () => {
 
   describe("GET /api/knowledge/files", () => {
     it("returns empty array when knowledge directory does not exist", async () => {
-      const fs = await import("fs")
       const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(false)
 
       const res = await request(app).get("/api/knowledge/files")
@@ -306,7 +311,6 @@ describe("Knowledge API routes", () => {
     })
 
     it("lists files in the knowledge directory with indexed status", async () => {
-      const fs = await import("fs")
       knowledgeBase._addDocument("indexed.md")
 
       vi.spyOn(fs, "existsSync").mockReturnValue(true)

@@ -1,11 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 nirholas (https://github.com/nirholas/agent-voice-chat)
 
-const { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } = require("../constants")
+const { DEFAULT_PAGE_SIZE } = require("../constants")
 const { Router } = require("express")
 const { ConversationStore } = require("../../../lib/conversation-store")
+const { ERROR_CODES } = require("../errors")
 const { logger } = require("../logger")
 
+/**
+ * Hard upper bound for one page of conversations. Lower than the global
+ * MAX_PAGE_SIZE because listing scans each conversation's messages when a
+ * search query is present.
+ */
+const MAX_LIST_LIMIT = 50
 /** Maximum search query length to prevent expensive linear scans. */
 const SEARCH_MAX_LENGTH = 200
 /** Maximum number of messages to scan per conversation during search. */
@@ -148,12 +155,11 @@ module.exports = function createConversationRoutes(deps) {
   // ── GET /api/conversations/archived ─────────────────────────────
   router.get("/archived", (req, res) => {
     const parsedLimit = Number(req.query.limit)
-    const limit = Math.min(Number.isFinite(parsedLimit) && parsedLimit > 0 ? parsedLimit : DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE)
+    const limit = Math.min(Number.isFinite(parsedLimit) && parsedLimit > 0 ? parsedLimit : DEFAULT_PAGE_SIZE, MAX_LIST_LIMIT)
     const offset = Math.max(parseInt(req.query.offset) || 0, 0)
     const archived = store.listArchived().sort((a, b) => b.createdAt - a.createdAt)
 
-    res.success({
-      items: archived.slice(offset, offset + limit),
+    res.list(archived.slice(offset, offset + limit), {
       total: archived.length,
       limit,
       offset
@@ -215,7 +221,7 @@ module.exports = function createConversationRoutes(deps) {
     // Pagination — support both ?limit/?offset (legacy) and ?pageSize/?page
     const limit = Math.min(
       parseInt(req.query.limit) || parseInt(req.query.pageSize) || DEFAULT_PAGE_SIZE,
-      MAX_PAGE_SIZE
+      MAX_LIST_LIMIT
     )
     const page = Math.max(parseInt(req.query.page) || 1, 1)
     const offset = Math.max(parseInt(req.query.offset) || (page - 1) * limit, 0)
@@ -279,7 +285,7 @@ module.exports = function createConversationRoutes(deps) {
       createdAt: c.createdAt
     }))
 
-    res.success({ items: data, total, limit, offset, page, nextCursor })
+    res.list(data, { total, limit, offset, page, nextCursor })
   })
 
   // ── GET /api/conversations/:id ───────────────────────────────────
@@ -309,9 +315,11 @@ module.exports = function createConversationRoutes(deps) {
     const format = req.query.format || "text"
     const safeName = sanitizeFilename(conv.title)
 
+    // Every transcript format renders the message list; JSON is the raw form of
+    // it. The conversation envelope itself is served by GET /api/conversations/:id.
     if (format === "json") {
       res.setHeader("Content-Disposition", `attachment; filename="${safeName}.json"`)
-      return res.success(conv)
+      return res.success(conv.messages || [])
     }
 
     if (format === "md") {
@@ -454,7 +462,7 @@ module.exports = function createConversationRoutes(deps) {
   router.post("/", (req, res) => {
     const conv = archiveConversation({ title: req.body?.title })
     if (!conv) {
-      return res.fail("VALIDATION_ERROR", "No messages to archive", 400)
+      return res.fail(ERROR_CODES.NO_MESSAGES, "No messages to archive", 400)
     }
     res.success(conv, 201)
   })

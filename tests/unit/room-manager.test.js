@@ -27,7 +27,8 @@ describe("RoomManager", () => {
       expect(Object.keys(room.agents)).toHaveLength(2)
       expect(room.currentTurn).toBeNull()
       expect(room.turnQueue).toEqual([])
-      expect(room.messages).toEqual([])
+      // room.messages is a CircularBuffer; toArray() is its array view
+      expect(room.messages.toArray()).toEqual([])
     })
 
     it("should create a room with custom id", () => {

@@ -1,23 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 nirholas (https://github.com/nirholas/agent-voice-chat)
 
-import fs from "fs"
 import path from "path"
-import os from "os"
+import { createRequire } from "module"
 
-// Use vi.hoisted so the mock fn is available when vi.mock is hoisted
-const { mockReadFileSync } = vi.hoisted(() => ({
-  mockReadFileSync: vi.fn()
-}))
-
-vi.mock("fs", async () => {
-  const actual = await vi.importActual("fs")
-  return {
-    ...actual,
-    default: { ...actual, readFileSync: mockReadFileSync },
-    readFileSync: mockReadFileSync
-  }
-})
+// AgentRegistry is CommonJS and calls require("fs"), which vi.mock cannot
+// intercept. Spy on the very same fs object it holds, resolved through the Node
+// require cache, and divert only reads of the agent config file so unrelated
+// reads (source maps, express internals) still hit the real disk.
+const nodeRequire = createRequire(import.meta.url)
+const fs = nodeRequire("fs")
+const CONFIG_BASENAME = "agents.config.json"
+const mockReadFileSync = vi.fn()
 
 import AgentRegistry from "../../agent-registry"
 
@@ -46,7 +40,19 @@ const TEST_CONFIG = {
 
 describe("AgentRegistry", () => {
   beforeEach(() => {
+    const realReadFileSync = fs.readFileSync
+    vi.spyOn(fs, "readFileSync").mockImplementation((file, ...rest) => {
+      if (typeof file === "string" && path.basename(file) === CONFIG_BASENAME) {
+        return mockReadFileSync(file, ...rest)
+      }
+      return realReadFileSync(file, ...rest)
+    })
+    mockReadFileSync.mockReset()
     mockReadFileSync.mockReturnValue(JSON.stringify(TEST_CONFIG))
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   describe("loading config", () => {

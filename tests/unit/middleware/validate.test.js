@@ -3,6 +3,7 @@
 
 import { z } from "zod"
 import { validate } from "../../../src/server/middleware/validate"
+import { responseHelpers } from "../../../src/server/middleware/response"
 
 describe("validate middleware", () => {
   const schema = z.object({
@@ -11,14 +12,15 @@ describe("validate middleware", () => {
   })
 
   function createMocks(body) {
-    return {
-      req: { body },
-      res: {
-        status: vi.fn().mockReturnThis(),
-        json: vi.fn()
-      },
-      next: vi.fn()
+    const req = { body }
+    const res = {
+      status: vi.fn().mockReturnThis(),
+      json: vi.fn()
     }
+    // validate() reports failures through res.fail, which responseHelpers installs
+    // earlier in the real middleware chain.
+    responseHelpers(req, res, () => {})
+    return { req, res, next: vi.fn() }
   }
 
   it("should call next() with valid body", () => {

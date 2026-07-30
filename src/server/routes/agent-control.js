@@ -160,7 +160,7 @@ module.exports = function createAgentControlRoutes(deps) {
   // ── Agent Control ──────────────────────────────────────────────
 
   // POST /api/agent/:id/say — queue a message for the agent to speak
-  router.post("/:id/say", messageLimiter, validate(SaySchema), async (req, res) => {
+  router.post("/:id/say", messageLimiter, validate(SaySchema), (req, res) => {
     const id = req.params.id
     const agent = registry.getAgent(id)
     if (!agent) {
@@ -184,15 +184,15 @@ module.exports = function createAgentControlRoutes(deps) {
     const text = sanitizeMessage(req.body.text)
     const position = spaceState.turnQueue.length + (spaceState.isProcessing ? 1 : 0)
 
-    try {
-      await handleLLMResponse(null, id, text)
-      res.json({ queued: true, position, completed: true })
-    } catch (err) {
-      logger.error({ err: err.message, agentId: id }, "Say command failed")
-      res.status(500).json({
-        error: { code: "LLM_ERROR", message: `Say failed: ${err.message}` }
-      })
+    // Queue semantics: the caller is told the turn is queued and the LLM turn
+    // runs on its own. A provider failure is logged and surfaced over the socket
+    // stream, never as a failure of this request.
+    const pending = handleLLMResponse(null, id, text)
+    if (pending && typeof pending.catch === "function") {
+      pending.catch(err => logger.error({ err: err.message, agentId: id }, "Say command failed"))
     }
+
+    res.json({ queued: true, position })
   })
 
   // POST /api/agent/:id/prompt — update agent's system prompt

@@ -4,7 +4,7 @@
 'use strict'
 
 const { DEFAULT_RATE_LIMIT_WINDOW_MS, RATE_LIMIT_TIERS } = require("../constants")
-const rateLimit = require("express-rate-limit")
+const { rateLimit, ipKeyGenerator } = require("express-rate-limit")
 
 const RATE_LIMIT_MESSAGE = parseInt(process.env.RATE_LIMIT_MESSAGE, 10) || 20
 const RATE_LIMIT_SESSION = parseInt(process.env.RATE_LIMIT_SESSION, 10) || 5
@@ -19,7 +19,9 @@ const RATE_LIMIT_GENERAL = parseInt(process.env.RATE_LIMIT_GENERAL, 10) || 100
 function keyGenerator(req) {
   if (req.user?.sub) return `user:${req.user.sub}`
   if (req.user?.apiKeyHash) return `key:${req.user.apiKeyHash}`
-  return `ip:${req.ip}`
+  // ipKeyGenerator normalizes IPv6 addresses to a /64 subnet so a single client
+  // cannot rotate through its address range to bypass the limit.
+  return `ip:${ipKeyGenerator(req.ip)}`
 }
 
 // ── Redis store setup (optional) ─────────────────────────────────────────────

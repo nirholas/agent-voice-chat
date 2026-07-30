@@ -183,7 +183,7 @@ describe("Conversations API routes", () => {
     it("deletes an existing conversation", async () => {
       const res = await request(app).delete(`/api/conversations/${convId}`)
       expect(res.status).toBe(200)
-      expect(res.body.deleted).toBe(true)
+      expect(res.body.data.deleted).toBe(true)
 
       // Verify it's gone
       const check = await request(app).get(`/api/conversations/${convId}`)

@@ -48,7 +48,6 @@ COPY --chown=app:app src/ ./src/
 COPY --chown=app:app providers/ ./providers/
 COPY --chown=app:app lib/ ./lib/
 COPY --chown=app:app public/ ./public/
-COPY --chown=app:app prompts/ ./prompts/
 COPY --chown=app:app openapi.json openapi.yaml package.json ./
 
 # Create runtime data directories with correct ownership

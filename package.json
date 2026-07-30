@@ -3,12 +3,12 @@
   "name": "agent-voice-chat",
   "version": "1.0.0",
   "description": "AI voice chat with two agents (Bob & Alice) - speak to them and they speak back",
-  "main": "dist/server.js",
+  "main": "server.js",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "node server.js",
     "dev": "node --watch server.js",
     "build": "tsc",
     "typecheck": "tsc --noEmit",

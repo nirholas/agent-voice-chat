@@ -203,8 +203,10 @@ describe("Performance", () => {
   it("encryption adds < 5ms per read/write for typical memory files", () => {
     const enc = new FileEncryption("perf-key")
     const store = new EncryptedFileStore(enc)
+    const plainStore = new PlainFileStore()
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "perf-test-"))
     const filePath = path.join(tmpDir, "perf.json")
+    const plainPath = path.join(tmpDir, "perf-plain.json")
 
     // Simulate a typical memory file (~100 memories)
     const data = {
@@ -217,26 +219,25 @@ describe("Performance", () => {
       })),
     }
 
-    // Warm up
+    // Warm up both paths
     store.write(filePath, data)
     store.read(filePath)
+    plainStore.write(plainPath, data)
+    plainStore.read(plainPath)
 
-    // Measure write
-    const writeStart = performance.now()
-    for (let i = 0; i < 100; i++) {
-      store.write(filePath, data)
+    const avgOf = (op) => {
+      const start = performance.now()
+      for (let i = 0; i < 100; i++) op()
+      return (performance.now() - start) / 100
     }
-    const writeAvg = (performance.now() - writeStart) / 100
 
-    // Measure read
-    const readStart = performance.now()
-    for (let i = 0; i < 100; i++) {
-      store.read(filePath)
-    }
-    const readAvg = (performance.now() - readStart) / 100
+    // JSON serialisation and disk IO are paid with or without encryption, so
+    // the cost encryption *adds* is the difference against the plain store.
+    const writeOverhead = avgOf(() => store.write(filePath, data)) - avgOf(() => plainStore.write(plainPath, data))
+    const readOverhead = avgOf(() => store.read(filePath)) - avgOf(() => plainStore.read(plainPath))
 
-    expect(writeAvg).toBeLessThan(5)
-    expect(readAvg).toBeLessThan(5)
+    expect(writeOverhead).toBeLessThan(5)
+    expect(readOverhead).toBeLessThan(5)
 
     fs.rmSync(tmpDir, { recursive: true, force: true })
   })

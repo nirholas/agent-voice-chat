@@ -2,13 +2,14 @@
 // Copyright 2026 nirholas (https://github.com/nirholas/agent-voice-chat)
 
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest"
+import { createRequire } from "module"
 
-// Hoisted mock — must be set up before provider is imported
-vi.mock("axios", () => ({
-  default: { post: vi.fn() }
-}))
+// The provider under test is CommonJS and calls require("axios") at load time.
+// vi.mock() does not intercept require() from CJS modules, so we spy on the very
+// same axios instance the provider holds, resolved through the Node require cache.
+const nodeRequire = createRequire(import.meta.url)
+const axios = nodeRequire("axios")
 
-import axios from "axios"
 import OpenAIChatProvider from "../../../providers/openai-chat.js"
 import openaiStreamChunks from "../../fixtures/provider-responses/openai-stream-chunks.json" assert { type: "json" }
 import openaiError429 from "../../fixtures/provider-responses/openai-error-429.json" assert { type: "json" }
@@ -35,12 +36,13 @@ function makeFixtureStream(chunks) {
 
 describe("OpenAI Chat Provider", () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.spyOn(axios, "post").mockResolvedValue({ data: makeSSEStream("data: [DONE]\n") })
     vi.stubEnv("OPENAI_API_KEY", "test-openai-key")
     vi.stubEnv("OPENAI_MODEL", "")
   })
 
   afterEach(() => {
+    vi.restoreAllMocks()
     vi.unstubAllEnvs()
   })
 

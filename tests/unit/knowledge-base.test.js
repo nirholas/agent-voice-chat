@@ -51,6 +51,8 @@ describe("KnowledgeBase", () => {
       // Write a fake index
       fs.mkdirSync(TEST_INDEX_DIR, { recursive: true })
       const indexData = {
+        // An index without a current version is treated as outdated and rebuilt
+        version: kb.indexVersion,
         chunks: [{ id: "c1", docName: "test.md", chunkIndex: 0, content: "hello", embedding: [1, 2] }],
         documents: { "test.md": { name: "test.md", chunksCount: 1, indexedAt: "2026-01-01" } }
       }

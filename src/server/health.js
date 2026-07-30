@@ -164,14 +164,19 @@ function getHealthResponse() {
 
 /**
  * Returns per-provider health with circuit breaker state (cached data).
+ *
+ * @param {{ llm: object, stt: object, tts: object }} [breakers] - breaker
+ *   instances to report on. Defaults to the ones registered with
+ *   setCircuitBreakers(); pass them explicitly from a caller that already holds
+ *   them so the response never depends on registration order.
  */
-function getProviderHealth() {
+function getProviderHealth(breakers = circuitBreakers) {
   const roles = ["llm", "stt", "tts"]
   const result = {}
 
   for (const role of roles) {
     const cached = providerStatus[role]
-    const breaker = circuitBreakers?.[role]
+    const breaker = breakers?.[role]
     const breakerState = breaker ? breaker.getState() : null
 
     result[role] = {

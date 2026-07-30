@@ -47,7 +47,7 @@ module.exports = function createSystemRoutes(deps) {
       }
     }
 
-    const providerHealth = getProviderHealth()
+    const providerHealth = getProviderHealth(breakers)
     const status = apiKeyOk ? "ok" : "degraded"
 
     res.status(apiKeyOk ? 200 : 503).json({
@@ -74,7 +74,7 @@ module.exports = function createSystemRoutes(deps) {
   // ── GET /api/health/providers ────────────────────────────────────
   // Returns per-provider health with circuit breaker state (cached data)
   router.get("/health/providers", (req, res) => {
-    res.json(getProviderHealth())
+    res.json(getProviderHealth(breakers))
   })
 
   // ── POST /api/health/providers/check ─────────────────────────────
@@ -102,7 +102,7 @@ module.exports = function createSystemRoutes(deps) {
   // Kubernetes: readinessProbe
   router.get("/health/ready", (req, res) => {
     const ready = isReady()
-    const providerHealth = getProviderHealth()
+    const providerHealth = getProviderHealth(breakers)
 
     res.status(ready ? 200 : 503).json({
       status: ready ? "ready" : "not_ready",

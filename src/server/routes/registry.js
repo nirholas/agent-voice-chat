@@ -70,7 +70,10 @@ module.exports = function createRegistryRoutes(deps) {
         agentIds: result.data.agents.map(a => a.id)
       })
     } else {
-      res.fail("VALIDATION_ERROR", "Config validation failed", 400, result.errors)
+      // A validation report is the result of this endpoint, not an error in
+      // calling it, so both outcomes return the same document shape. The 400
+      // status still tells a caller the submitted config is unusable.
+      res.success({ valid: false, errors: result.errors }, 400)
     }
   })
 

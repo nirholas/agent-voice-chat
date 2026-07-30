@@ -3,10 +3,18 @@
 
 const { MAX_AUDIO_SIZE_BYTES } = require("../constants")
 const helmet = require("helmet")
-const { IS_PRODUCTION } = require("../logger")
 
 // Localhost patterns allowed in development
 const DEV_ORIGIN_RE = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/
+
+/**
+ * Evaluated per call, not captured at import time, so the CORS and CSP policies
+ * always reflect the current environment rather than whichever NODE_ENV happened
+ * to be set when this module was first loaded.
+ */
+function isProduction() {
+  return process.env.NODE_ENV === "production"
+}
 
 /**
  * Parse ALLOWED_ORIGINS or CORS_ORIGINS env var into an allowlist array,
@@ -22,7 +30,7 @@ function getAllowedOrigins() {
   }
 
   // In production with no explicit list, same-origin only
-  if (IS_PRODUCTION) {
+  if (isProduction()) {
     return false
   }
 
