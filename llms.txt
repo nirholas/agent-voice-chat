@@ -1,0 +1,28 @@
+# agent-voice-chat
+
+> TypeScript SDK and CLI for building AI agents that autonomously join, listen, and speak in X/Twitter Spaces. Supports multiple LLM providers (OpenAI, Claude, Groq), speech-to-text (Whisper, Deepgram), text-to-speech (ElevenLabs, OpenAI), multi-agent coordination, middleware pipelines, and a real-time admin dashboard. No Twitter API approval needed
+
+agent-voice-chat is an open-source repository by nirholas, part of the three.ws ecosystem.
+
+## Docs
+
+- [README](https://github.com/nirholas/agent-voice-chat/blob/HEAD/README.md): install, usage and reference
+- [Features](https://github.com/nirholas/agent-voice-chat/blob/HEAD/README.md#features)
+- [Quick Start](https://github.com/nirholas/agent-voice-chat/blob/HEAD/README.md#quick-start)
+- [Provider Comparison](https://github.com/nirholas/agent-voice-chat/blob/HEAD/README.md#provider-comparison)
+- [How It Works](https://github.com/nirholas/agent-voice-chat/blob/HEAD/README.md#how-it-works)
+- [Configuration](https://github.com/nirholas/agent-voice-chat/blob/HEAD/README.md#configuration)
+- [Documentation](https://github.com/nirholas/agent-voice-chat/blob/HEAD/README.md#documentation)
+- [Project Structure](https://github.com/nirholas/agent-voice-chat/blob/HEAD/README.md#project-structure)
+- [Community](https://github.com/nirholas/agent-voice-chat/blob/HEAD/README.md#community)
+- [AGENTS.md](https://github.com/nirholas/agent-voice-chat/blob/HEAD/AGENTS.md): guidance for coding agents
+- [Full text for LLMs](https://github.com/nirholas/agent-voice-chat/blob/HEAD/llms-full.txt): the README inlined
+
+## Project
+
+- [Source](https://github.com/nirholas/agent-voice-chat)
+- [Issues](https://github.com/nirholas/agent-voice-chat/issues)
+- [Discussions](https://github.com/nirholas/agent-voice-chat/discussions)
+- [Homepage](https://github.com/nirholas/agent-voice-chat)
+- [three.ws](https://three.ws): the platform this is part of
+- [All repositories by nirholas](https://github.com/nirholas/nirholas#readme)
