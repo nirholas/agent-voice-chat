@@ -19,7 +19,7 @@
     "build:packages": "npm run build --workspace=packages/core && npm run build --workspace=packages/react && npm run build --workspace=packages/vue"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.80.0",
+    "@anthropic-ai/sdk": "^0.91.1",
     "axios": "^1.6.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
