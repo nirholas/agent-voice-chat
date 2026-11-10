@@ -1,0 +1,21 @@
+{
+  "name": "agent-voice-chat",
+  "owner": {
+    "name": "nirholas"
+  },
+  "description": "Self-host a multi-agent AI voice chat server and drive its agents and rooms through the REST API.",
+  "plugins": [
+    {
+      "name": "agent-voice-chat",
+      "source": "./plugins/agent-voice-chat",
+      "description": "Self-host a multi-agent AI voice chat server and drive its agents and rooms through the REST API.",
+      "category": "automation",
+      "tags": [
+        "voice",
+        "agents",
+        "chat",
+        "api"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "agent-voice-chat",
+  "version": "1.0.0",
+  "description": "Self-host a multi-agent AI voice chat server and drive its agents and rooms through the REST API.",
+  "author": {
+    "name": "nirholas"
+  },
+  "repository": "https://github.com/nirholas/agent-voice-chat",
+  "homepage": "https://github.com/nirholas/agent-voice-chat",
+  "keywords": [
+    "voice-chat",
+    "ai-agents",
+    "speech",
+    "stt",
+    "tts",
+    "realtime",
+    "socket-io"
+  ]
+}
