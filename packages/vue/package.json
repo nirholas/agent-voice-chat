@@ -18,7 +18,9 @@
       }
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build && vue-tsc --emitDeclarationOnly --declaration --outDir dist",
@@ -41,5 +43,11 @@
   },
   "sideEffects": false,
   "license": "SEE LICENSE IN LICENSE",
-  "keywords": ["voice-chat", "ai", "vue", "composable", "component"]
+  "keywords": [
+    "voice-chat",
+    "ai",
+    "vue",
+    "composable",
+    "component"
+  ]
 }

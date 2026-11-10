@@ -18,7 +18,9 @@
       }
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist",
@@ -44,5 +46,11 @@
   },
   "sideEffects": false,
   "license": "SEE LICENSE IN LICENSE",
-  "keywords": ["voice-chat", "ai", "react", "hooks", "component"]
+  "keywords": [
+    "voice-chat",
+    "ai",
+    "react",
+    "hooks",
+    "component"
+  ]
 }
